@@ -77,7 +77,7 @@ function bspwmysxhkd(){
 
 function aditional_scripts(){
 
-	echo -ne "\n${yellowColor}Installing aditional scripts\n\n${endColor}"
+	echo -ne "\n${yellowColor}Downloading aditional scripts\n\n${endColor}"
 	sleep 3
 
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/hackthebox.sh"
@@ -138,6 +138,11 @@ function polybarr(){
 	fc-cache -v && sudo rm /etc/fonts/conf.d/70-no-bitmaps.conf
 	cp -r * ~/.config/polybar && ~/.config/polybar/launch.sh
 	sudo rm -r ~/.config/polybar && cd ..
+
+	rm -r polybar
+	wget "https://github.com/informatica64-tools/tools/raw/master/Comprimido.tar"
+	tar xf Comprimido.tar
+	mv polybar ~/.config/
 
 }; polybarr
 
