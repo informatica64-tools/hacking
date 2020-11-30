@@ -11,10 +11,10 @@ turquoiseColor="\e[0;36m\033[1m"
 grayColor="\e[0;37m\033[1m"
 
 
-trap ctrl_c INT
+#trap ctrl_c INT
 
-function_ctrl(){
-	echo -ne "\n${redColor}[!] Existing...\n${endColor}"
+#function_ctrl(){
+#	echo -ne "\n${redColor}[!] Existing...\n${endColor}"
 
 
 echo -ne "\n${blueColor}1) Arch Linux; 2) Debian/Ubuntu\n\n${endColor}"
@@ -32,7 +32,7 @@ function dependencies(){
 	if [ "$(echo $var1)" == "1" ]; then
 		echo -ne "\n${yellowColor}Installing pacman dependencies\n\n${endColor}"
 		sudo pacman -S libxcb xcb-util xcb-util-wm xcb-util-keysyms
-	
+
 	elif [ "$(echo $var1)" == "2" ]; then
 		echo -ne "\n${yellowColor}Installing Debian/Ubuntu dependencies\n\n${endColor}"
 		sudo apt-get install libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev acpi -y
@@ -52,8 +52,13 @@ function bspwmysxhkd(){
 
 	git clone https://github.com/baskerville/bspwm.git
 	git clone https://github.com/baskerville/sxhkd.git
-	cd bspwm && make && sudo make install
-	cd ../sxhkd && make && sudo make install && cd ..
+	cd bspwm
+	make
+	sudo make install
+	cd ../sxhkd
+	make
+	sudo make install
+	cd ..
 
 	mkdir ~/.config/bspwm/scripts
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/bspwmrc"
@@ -72,21 +77,18 @@ function bspwmysxhkd(){
 
 function aditional_scripts(){
 
-	echo -ne "\n{yellowColor}Installing aditional scripts\n\n${endColor}"
+	echo -ne "\n${yellowColor}Installing aditional scripts\n\n${endColor}"
 	sleep 3
 
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/hackthebox.sh"
 	mv hackthebox.sh ~/.config/bin/
-	chmod +x ~/.config/bin/hackthebox.sh
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/ethernet_status.sh"
 	mv ethernet_status.sh ~/.config/bin/
-	chmod +x ~/.config/bin/ethernet_status.sh
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/battery.sh"
 	mv battery.sh ~/.config/bin/
-	chmod +x ~/.config/bin/battery.sh
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/nickname.sh"
 	mv nickname.sh ~/.config/bin/
-	chmod +x ~/.config/bin/nickname.sh
+	chmod +x ~/.config/bin/*
 
 }; aditional_scripts
 
@@ -114,17 +116,21 @@ function polybarr(){
 	wget "https://github.com/polybar/polybar/releases/download/3.4.3/polybar-3.4.3.tar"
 	tar xf polybar-3.4.3.tar
 	sudo rm -r polybar-3.4.3.tar
-	cd polybar && mkdir build && cd build
-	cmake .. && make -J$(nproc)
+	cd polybar
+	mkdir build
+	cd build
+	cmake ..
+	make -j$(nproc)
+	# Optional. This will install the polybar executable in /usr/local/bin
 	sudo make install
-	mv polybar ~/.config/
-	
 	cd ../../
+	mv polybar ~/.config/
+
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/launch.sh"
 	mv launch.sh ~/.config/polybar/
 	chmod +x ~/.config/polybar/launch.sh
 
-	echo -ne "\n${yellowColor}Polybat theme\n\n${endColor}"
+	echo -ne "\n${yellowColor}Polybar theme\n\n${endColor}"
 
 	git clone https://github.com/adi1090x/polybar-themes
 	cd polybar-themes/polybar-11
@@ -145,8 +151,11 @@ function dunsst(){
 
 function hacknerdfonts(){
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"
-	mkdir Hack && mv Hack.zip && mv Hack.zip && sudo unzip *
+	mkdir Hack
+	mv Hack.zip Hack/
+	cd Hack && unzip *
 	cd .. && sudo mv Hack /usr/share/fonts/
 
 }; hacknerdfonts
 
+sudo rm bspwm sxhkd polybar polybar-themes
