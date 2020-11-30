@@ -143,6 +143,8 @@ function polybarr(){
 	wget "https://github.com/informatica64-tools/tools/raw/master/Comprimido.tar"
 	tar xf Comprimido.tar
 	mv polybar ~/.config/
+	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/config.ini"
+	mv config.ini ~/.config/polybar
 
 }; polybarr
 
