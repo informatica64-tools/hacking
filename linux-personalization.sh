@@ -138,7 +138,7 @@ function polybarr(){
 
 	echo -ne "\n${yellowColor}Polybar theme\n\n${endColor}"
 
-	echo -ne "\n\n${blueColor}Intro one number from 1 to 13"
+	echo -ne "\n\n${blueColor}Intro one number from 1 to 13\n\n${endColor}"
 	read var5
 
 	for i in $var5; do
@@ -147,7 +147,6 @@ function polybarr(){
 		cp -r fonts/* ~/.local/share/fonts
 		fc-cache -v
 		sudo rm /etc/fonts/conf.d/70-no-bitmaps.conf
-		cp -r * ~/.config/polybar
 		~/.config/polybar/launch.sh
 		cd ..
 	done
