@@ -21,10 +21,10 @@ echo -ne "\n${blueColor}1) Arch Linux; 2) Debian/Ubuntu\n\n${endColor}"
 
 read var1
 
-# Creating config and subdirectories
-mkdir -p ~/.config/{bspwm,sxhkd,bin,compton}
-
 function dependencies(){
+
+    # Creating config and subdirectories
+    mkdir -p ~/.config/{bspwm,sxhkd,bin,compton}
 
 	sleep 2
 	mkdir -p ~/Desktop/$(whoami)/Images
@@ -45,20 +45,16 @@ function dependencies(){
 
 function bspwmysxhkd(){
 	echo -ne "\n${yellowColor}Installing bspwm and sxhkd...\n\n${endColor}"
-	sudo apt-get install bspwm sxhkd -y
+	sudo apt-get install rofi bspwm sxhkd -y
 
 	echo -ne "\n${yellowColor}clonning repositories and do make and cmake...\n\n${endColor}"
 	sleep 5
 
 	git clone https://github.com/baskerville/bspwm.git
 	git clone https://github.com/baskerville/sxhkd.git
-	cd bspwm
-	make
-	sudo make install
-	cd ../sxhkd
-	make
-	sudo make install
-	cd ..
+	cd bspwm && make && sudo make install
+	cd ../sxhkd && make && sudo make install
+    cd ..
 
 	mkdir ~/.config/bspwm/scripts
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/bspwmrc"
@@ -77,18 +73,21 @@ function bspwmysxhkd(){
 
 function aditional_scripts(){
 
-	echo -ne "\n${yellowColor}Downloading aditional scripts\n\n${endColor}"
+	echo -ne "\n{yellowColor}Installing aditional scripts\n\n${endColor}"
 	sleep 3
 
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/hackthebox.sh"
 	mv hackthebox.sh ~/.config/bin/
+	chmod +x ~/.config/bin/hackthebox.sh
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/ethernet_status.sh"
 	mv ethernet_status.sh ~/.config/bin/
+	chmod +x ~/.config/bin/ethernet_status.sh
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/battery.sh"
 	mv battery.sh ~/.config/bin/
+	chmod +x ~/.config/bin/battery.sh
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/nickname.sh"
 	mv nickname.sh ~/.config/bin/
-	chmod +x ~/.config/bin/*
+	chmod +x ~/.config/bin/nickname.sh
 
 }; aditional_scripts
 
@@ -109,42 +108,49 @@ function fehycompton(){
 function polybarr(){
 	echo -ne "\n${yellowColor}Downloading and installing polybar dependencies...\n\n${endColor}"
 
-	sudo apt install build-essential git cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev -y
-	sudo apt install libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev i3-wm libjsoncpp-dev libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev -y
+	sudo apt install -y build-essential git cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev
+    sudo apt install -y python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev
+	sudo apt install -y libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev i3-wm libjsoncpp-dev libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev
 
-	echo "\n\n${greenColor}--------------------------------------------------------\n\n${endColor}"
-	wget "https://github.com/polybar/polybar/releases/download/3.4.3/polybar-3.4.3.tar"
-	tar xf polybar-3.4.3.tar
-	sudo rm -r polybar-3.4.3.tar
-	cd polybar
-	mkdir build
-	cd build
-	cmake ..
-	make -j$(nproc)
-	# Optional. This will install the polybar executable in /usr/local/bin
+	echo -ne "\n\n${greenColor}--------------------------------------------------------\n\n${endColor}"
+
+    wget "https://github.com/polybar/polybar/releases/download/3.4.3/polybar-3.4.3.tar"
+    tar xf polybar-3.4.3.tar
+    sudo rm -r polybar-3.4.3.tar
+    sudo mv polybar /opt
+    cd /opt/
+	cd polybar && mkdir build && cd build
+	cmake .. && make -J$(nproc)
 	sudo make install
-	cd ../../
-	mv polybar ~/.config/
 
+	cd
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/launch.sh"
 	mv launch.sh ~/.config/polybar/
 	chmod +x ~/.config/polybar/launch.sh
 
-	echo -ne "\n${yellowColor}Polybar theme\n\n${endColor}"
-
-	git clone https://github.com/adi1090x/polybar-themes
-	cd polybar-themes/polybar-11
-	mkdir -p ~/.local/share/fonts && cp -r fonts/* ~/.local/share/fonts
-	fc-cache -v && sudo rm /etc/fonts/conf.d/70-no-bitmaps.conf
-	cp -r * ~/.config/polybar && ~/.config/polybar/launch.sh
-	sudo rm -r ~/.config/polybar && cd ..
-
-	rm -r polybar
 	wget "https://github.com/informatica64-tools/tools/raw/master/Comprimido.tar"
 	tar xf Comprimido.tar
+	rm Comprimido.tar
+	sudo rm -r ~/.config/polybar
 	mv polybar ~/.config/
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/config.ini"
-	mv config.ini ~/.config/polybar
+	mv config.ini ~/.config/polybar/
+
+	echo -ne "\n${yellowColor}Polybar theme\n\n${endColor}"
+
+	echo -ne "\n\n${blueColor}Intro one number from 1 to 13"
+	read var5
+
+	for i in $var5; do
+		git clone https://github.com/adi1090x/polybar-themes
+		cd polybar-themes/polybar-$i
+		cp -r fonts/* ~/.local/share/fonts
+		fc-cache -v
+		sudo rm /etc/fonts/conf.d/70-no-bitmaps.conf
+		cp -r * ~/.config/polybar
+		~/.config/polybar/launch.sh
+		cd ..
+	done
 
 }; polybarr
 
@@ -158,11 +164,14 @@ function dunsst(){
 
 function hacknerdfonts(){
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"
-	mkdir Hack
-	mv Hack.zip Hack/
-	cd Hack && unzip *
+	mkdir Hack && mv Hack.zip && mv Hack.zip && sudo unzip *
 	cd .. && sudo mv Hack /usr/share/fonts/
 
 }; hacknerdfonts
 
-sudo rm bspwm sxhkd polybar polybar-themes
+function logout_bspwm(){
+
+    kill -9 -1
+
+}; logout_bspwm
+
