@@ -180,6 +180,15 @@ function hacknerdfonts(){
 
 }; hacknerdfonts
 
+function zsh_shell(){
+	sudo chsh -s $(which zsh) $(whoami)
+	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/.p10k.zsh"
+	cp .p10k.zsh $HOME
+	sudo mv .p10k.zsh /root/
+	sudo chsh -s $(which zsh) root
+
+}; zsh_shell
+
 function logout_bspwm(){
 
     kill -9 -1
