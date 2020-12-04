@@ -52,8 +52,12 @@ function bspwmysxhkd(){
 
 	git clone https://github.com/baskerville/bspwm.git
 	git clone https://github.com/baskerville/sxhkd.git
-	cd bspwm && make && sudo make install
-	cd ../sxhkd && make && sudo make install
+	cd bspwm
+	make
+	sudo make install
+	cd ../sxhkd
+	make
+	sudo make install
     cd ..
 
 	mkdir ~/.config/bspwm/scripts
@@ -98,19 +102,22 @@ function fehycompton(){
 
 	echo -ne "\n${yellowColor}installing and configuring compton and feh\n\n${endColor}"
 
+	mkdir -p /home/Desktop/$(whoami)/Images
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/compton.conf"
 	mv compton.conf ~/.config/compton/
 	wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/Wallpaper.png"
 	mv Wallpaper.png ~/Desktop/$(whoami)/Images
 
-}
+}; fehycompton
 
 function polybarr(){
 	echo -ne "\n${yellowColor}Downloading and installing polybar dependencies...\n\n${endColor}"
 
-	sudo apt install -y build-essential git cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev
+	sudo apt install -y build-essential git cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev
+	sudo apt install -y libxcb-composite0-dev
     sudo apt install -y python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev
-	sudo apt install -y libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev i3-wm libjsoncpp-dev libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev
+	sudo apt install -y libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev i3-wm libjsoncpp-dev
+	sudo apt install -y libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev
 
 	echo -ne "\n\n${greenColor}--------------------------------------------------------\n\n${endColor}"
 
@@ -163,8 +170,13 @@ function dunsst(){
 
 function hacknerdfonts(){
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"
-	mkdir Hack && mv Hack.zip && mv Hack.zip && sudo unzip *
-	cd .. && sudo mv Hack /usr/share/fonts/
+	mkdir Hack
+	mv Hack.zip Hack/
+	cd Hack
+	unzip *
+	cd ..
+	mkdir -p /usr/share/fonts
+	sudo mv Hack /usr/share/fonts/
 
 }; hacknerdfonts
 
