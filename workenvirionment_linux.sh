@@ -47,7 +47,7 @@ function dependencies(){
 			sudo make install
 			cd ..
 
-			mkdir -p ~/.config{bspwm/scripts/bin/nvim/sxhkd/compton}
+			mkdir -p ~/.config{bspwm,scripts,bin,nvim,sxhkd,compton}
 			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/bspwmrc"
 			mv bspwmrc ~/.config/bspwm/
 			chmod u+x ~/.config/bspwm/bspwmrc
@@ -205,7 +205,7 @@ function dependencies(){
 			sudo make install
 			cd ..
 
-			mkdir -p ~/.config{bspwm/scripts/bin/nvim/sxhkd/compton}
+			mkdir -p ~/.config{bspwm,scripts,bin,nvim,sxhkd,compton}
 			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/bspwmrc"
 			mv bspwmrc ~/.config/bspwm/
 			chmod u+x ~/.config/bspwm/bspwmrc
