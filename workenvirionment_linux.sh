@@ -23,15 +23,79 @@ read var1
 
 function dependencies(){
 
-    	# Creating config and subdirectories
-    	mkdir -p ~/.config/{bspwm,sxhkd,bin,compton}
-
 	sleep 2
 	mkdir -p ~/Desktop/$(whoami)/Images
 
 	if [ "$(echo $var1)" == "1" ]; then
 		echo -ne "\n${yellowColor}Installing pacman dependencies\n\n${endColor}"
-		sudo pacman -S libxcb xcb-util xcb-util-wm xcb-util-keysyms
+		sudo pacman -S libxcb xcb-util xcb-util-wm xcb-util-keysyms make cmake gcc acpi 
+		
+		function bspwmysxhkd(){
+			echo -ne "\n${yellowColor}Installing bspwm and sxhkd...\n\n${endColor}"
+			sudo apt-get install rofi bspwm sxhkd -y
+
+			echo -ne "\n${yellowColor}clonning repositories and do make and cmake...\n\n${endColor}"
+			sleep 5
+
+			git clone https://github.com/baskerville/bspwm.git
+			git clone https://github.com/baskerville/sxhkd.git
+			cd bspwm
+			make
+			sudo make install
+			cd ../sxhkd
+			make
+			sudo make install
+			cd ..
+
+			mkdir -p ~/.config{bspwm/scripts/bin/nvim/sxhkd/compton}
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/bspwmrc"
+			mv bspwmrc ~/.config/bspwm/
+			chmod u+x ~/.config/bspwm/bspwmrc
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/sxhkdrc"
+			mv sxhkdrc ~/.config/sxhkd
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/bspwm_resize"
+			mv bspwm_resize ~/.config/bspwm/scripts/
+			chmod +x ~/.config/bspwm/scripts/bspwm_resize
+
+			touch ~/.xinitrc
+			echo "sxhkd &\nexec bspwm" > ~/.xinitrc
+
+		}; bspwmysxhkd
+		
+		function aditional_scripts(){
+
+			echo -ne "\n{yellowColor}Installing aditional scripts\n\n${endColor}"
+			sleep 3
+
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/hackthebox.sh"
+			mv hackthebox.sh ~/.config/bin/
+			chmod +x ~/.config/bin/hackthebox.sh
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/ethernet_status.sh"
+			mv ethernet_status.sh ~/.config/bin/
+			chmod +x ~/.config/bin/ethernet_status.sh
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/battery.sh"
+			mv battery.sh ~/.config/bin/
+			chmod +x ~/.config/bin/battery.sh
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/nickname.sh"
+			mv nickname.sh ~/.config/bin/
+			chmod +x ~/.config/bin/nickname.sh
+
+		}; aditional_scripts
+		
+		function fehycompton(){
+			echo -ne "\n${yellowColor}Installing compton, feh and zsh\n\n${endColor}"
+
+			sudo pacman -Syyu feh compton html2text zsh rofi nautilus
+
+			echo -ne "\n${yellowColor}installing and configuring compton and feh\n\n${endColor}"
+
+			mkdir -p ~/Desktop/$(whoami)/Images
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/compton.conf"
+			mv compton.conf ~/.config/compton/
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/Wallpaper.png"
+			mv Wallpaper.png ~/Desktop/$(whoami)/Images
+
+		}; fehycompton
 
 	elif [ "$(echo $var1)" == "2" ]; then
 		echo -ne "\n${yellowColor}Installing Debian/Ubuntu dependencies\n\n${endColor}"
@@ -54,7 +118,7 @@ function dependencies(){
 			sudo make install
 			cd ..
 
-			mkdir ~/.config/bspwm/scripts
+			mkdir -p ~/.config{bspwm/scripts/bin/nvim/sxhkd/compton}
 			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/bspwmrc"
 			mv bspwmrc ~/.config/bspwm/
 			chmod u+x ~/.config/bspwm/bspwmrc
@@ -96,7 +160,7 @@ function dependencies(){
 
 			echo -ne "\n${yellowColor}installing and configuring compton and feh\n\n${endColor}"
 
-			mkdir -p /home/Desktop/$(whoami)/Images
+			mkdir -p ~/Desktop/$(whoami)/Images
 			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/compton.conf"
 			mv compton.conf ~/.config/compton/
 			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/Wallpaper.png"
