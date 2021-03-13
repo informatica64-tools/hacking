@@ -98,6 +98,62 @@ function dependencies(){
 
 		}; fehycompton
 		
+		function polybarr(){
+		
+			echo -ne "\n${yellowColor}Downloading and installing polybar dependencies...\n\n${endColor}"
+
+			sudo pacman -S build-essential git cmake cmake-data pkg-config python3-sphinx libcairo2-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev
+			sudo pacman -S libxcb-composite0-dev
+			sudo pacman -S python3-xcbgen xcb-proto libxcb-image0-dev libxcb-ewmh-dev libxcb-icccm4-dev
+			sudo pacman -S libxcb-xkb-dev libxcb-xrm-dev libxcb-cursor-dev libasound2-dev libpulse-dev i3-wm libjsoncpp-dev
+			sudo pacman -S libmpdclient-dev libcurl4-openssl-dev libnl-genl-3-dev
+			sudo pacman -S kernel26-headers file base-devel abs
+			
+			cd
+			git clone https://aur.archlinux.org/polybar.git
+			cd polybar && makepkg -si
+			
+			echo -ne "\n\n${greenColor}--------------------------------------------------------\n\n${endColor}"
+			wget "https://github.com/polybar/polybar/releases/download/3.4.3/polybar-3.4.3.tar"
+			tar xf polybar-3.4.3.tar
+			sudo rm -r polybar-3.4.3.tar
+			sudo mv polybar /opt
+			cd /opt/
+			cd polybar && mkdir build && cd build
+			cmake .. && make -J$(nproc)
+			sudo make install
+
+			cd
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/launch.sh"
+			mv launch.sh ~/.config/polybar/
+			chmod +x ~/.config/polybar/launch.sh
+
+			wget "https://github.com/informatica64-tools/tools/raw/master/Comprimido.tar"
+			tar xf Comprimido.tar
+			rm Comprimido.tar
+			sudo rm -r ~/.config/polybar
+			mv polybar ~/.config/
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/config.ini"
+			mv config.ini ~/.config/polybar/
+
+			echo -ne "\n${yellowColor}Polybar theme\n\n${endColor}"
+
+			echo -ne "\n\n${blueColor}Intro one number from 1 to 13\n\n${endColor}"
+			
+			read var5
+
+			for i in $var5; do
+				git clone https://github.com/adi1090x/polybar-themes
+				cd polybar-themes/polybar-$i
+				cp -r fonts/* ~/.local/share/fonts
+				fc-cache -v
+				sudo rm /etc/fonts/conf.d/70-no-bitmaps.conf
+				~/.config/polybar/launch.sh
+				cd ..
+			 done
+
+		}; polybarr		
+		
 		function dunsst(){
 			echo -ne "\n${blueColor}Installing dunst\n\n${endColor}"
 
@@ -126,6 +182,7 @@ function dependencies(){
 			sudo chsh -s $(which zsh) root
 
 		}; zsh_shell
+		
 
 	elif [ "$(echo $var1)" == "2" ]; then
 		echo -ne "\n${yellowColor}Installing Debian/Ubuntu dependencies\n\n${endColor}"
@@ -275,7 +332,7 @@ function dependencies(){
 			sudo mv .p10k.zsh /root/
 			sudo chsh -s $(which zsh) root
 
-}; zsh_shell
+		}; zsh_shell
 
 	else
 		echo -ne "\n${redColor}You should select 1 or 2\n\n${endColor}"; exit 1
