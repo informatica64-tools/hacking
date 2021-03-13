@@ -35,7 +35,7 @@ function dependencies(){
 
 	elif [ "$(echo $var1)" == "2" ]; then
 		echo -ne "\n${yellowColor}Installing Debian/Ubuntu dependencies\n\n${endColor}"
-		sudo apt-get install libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev acpi -y
+		sudo apt-get install make cmake gcc libxcb-xinerama0-dev libxcb-icccm4-dev libxcb-randr0-dev libxcb-util0-dev libxcb-ewmh-dev libxcb-keysyms1-dev libxcb-shape0-dev acpi -y
 
 		function bspwmysxhkd(){
 			echo -ne "\n${yellowColor}Installing bspwm and sxhkd...\n\n${endColor}"
