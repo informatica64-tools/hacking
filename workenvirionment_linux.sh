@@ -23,6 +23,9 @@ read var1
 
 function dependencies(){
 
+	mkdir -p ~/.config{bspwm,bin,nvim,sxhkd,compton}
+	mkdir ~/.config/bspwm/scripts
+	
 	sleep 2
 	mkdir -p ~/Desktop/$(whoami)/Images
 
@@ -47,7 +50,6 @@ function dependencies(){
 			sudo make install
 			cd ..
 
-			mkdir -p ~/.config{bspwm,scripts,bin,nvim,sxhkd,compton}
 			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/bspwmrc"
 			mv bspwmrc ~/.config/bspwm/
 			chmod u+x ~/.config/bspwm/bspwmrc
