@@ -32,7 +32,7 @@ function dependencies(){
 		
 		function bspwmysxhkd(){
 			echo -ne "\n${yellowColor}Installing bspwm and sxhkd...\n\n${endColor}"
-			sudo apt-get install rofi bspwm sxhkd -y
+			sudo pacman -S rofi bspwm sxhkd
 
 			echo -ne "\n${yellowColor}clonning repositories and do make and cmake...\n\n${endColor}"
 			sleep 5
@@ -58,7 +58,8 @@ function dependencies(){
 			chmod +x ~/.config/bspwm/scripts/bspwm_resize
 
 			touch ~/.xinitrc
-			echo "sxhkd &\nexec bspwm" > ~/.xinitrc
+			echo "sxhkd &" > ~/.xinitrc
+			echo "exec bspwm" >> ~/.xinitrc
 
 		}; bspwmysxhkd
 		
@@ -96,6 +97,35 @@ function dependencies(){
 			mv Wallpaper.png ~/Desktop/$(whoami)/Images
 
 		}; fehycompton
+		
+		function dunsst(){
+			echo -ne "\n${blueColor}Installing dunst\n\n${endColor}"
+
+			sudo pacman -S dunst
+			echo "killall mate-notification-daemon; dunst &" >> ~/.config/bspwm/bspwmrc
+
+		}; dunsst
+
+		function hacknerdfonts(){
+			wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip"
+			mkdir Hack
+			mv Hack.zip Hack/
+			cd Hack
+			unzip *
+			cd ..
+			sudo mkdir -p /usr/share/fonts
+			sudo mv Hack /usr/share/fonts/
+
+		}; hacknerdfonts
+
+		function zsh_shell(){
+			sudo chsh -s $(which zsh) $(whoami)
+			wget "https://raw.githubusercontent.com/informatica64-tools/tools/master/.p10k.zsh"
+			cp .p10k.zsh $HOME
+			sudo cp .p10k.zsh /root
+			sudo chsh -s $(which zsh) root
+
+		}; zsh_shell
 
 	elif [ "$(echo $var1)" == "2" ]; then
 		echo -ne "\n${yellowColor}Installing Debian/Ubuntu dependencies\n\n${endColor}"
@@ -129,7 +159,8 @@ function dependencies(){
 			chmod +x ~/.config/bspwm/scripts/bspwm_resize
 
 			touch ~/.xinitrc
-			echo "sxhkd &\nexec bspwm" > ~/.xinitrc
+			echo "sxhkd &" > ~/.xinitrc
+			echo "exec bspwm" >> ~/.xinitrc
 
 		}; bspwmysxhkd
 
